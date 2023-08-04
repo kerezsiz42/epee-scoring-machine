@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fencing IoT App</title>
+    <style>
+        body {
+            font-family: monospace;
+            color: white;
+            background-color: black;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        button {
+            background-color: transparent;
+            color: inherit;
+            font-family: inherit;
+            font-size: large;
+            padding: 0.5rem;
+            border: white solid 2px;
+            border-radius: 3px;
+        }
+
+        button:hover {
+            text-decoration: underline;
+        }
+
+        #blue-score {
+            font-size: large;
+        }
+
+        #red-score {
+            font-size: large;
+        }
+
+        .red {
+            background-color: darkred;
+        }
+
+        .blue {
+            background-color: dodgerblue;
+        }
+
+        .draw {
+            color: black;
+            background-color: white;
+        }
+
+        .scores {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        ol {
+            font-size: larger;
+        }
+    </style>
+    <script defer>
+        "use strict"
+        const state = { soundEnabled: false, red: 0, blue: 0 }
+        const enableSound = () => { state.soundEnabled = true }
+        const playNote = () => {
+            const audioContext = new AudioContext();
+            const osc = audioContext.createOscillator();
+            osc.type = "sine";
+            osc.frequency.value = 800;
+            osc.connect(audioContext.destination);
+            osc.start();
+            setTimeout(() => { osc.stop() }, 2000);
+        }
+
+        const evtSource = new EventSource(`${location.protocol}//${location.host}/sse`);
+        evtSource.addEventListener("message", ({ data }) => {
+            const item = document.createElement("li");
+            item.textContent = data;
+            if (data === "red") {
+                state.red += 1
+            } else if (data === "blue") {
+                state.blue += 1
+            }
+            document.getElementById("blue-score").textContent = `Blue: ${state.blue}`
+            document.getElementById("red-score").textContent = `Red: ${state.red}`
+            if (state.soundEnabled) {
+                playNote();
+            }
+            const body = document.querySelector("body")
+            body.classList.remove(...body.classList)
+            body.classList.add(data)
+            document.getElementById("messages").appendChild(item);
+        })
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Fencing Scores</h1>
+        <button onclick="enableSound()">Enable sound</button>
+    </div>
+    <div class="scores">
+        <span id="blue-score">Blue: 0</span>
+        <span id="red-score">Red: 0</span>
+    </div>
+    <ol id="messages"></ol>
+</body>
+
+</html>
