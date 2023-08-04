@@ -89,6 +89,9 @@
                 state.red += 1
             } else if (data === "blue") {
                 state.blue += 1
+            } else if (data === "draw") {
+                state.red += 1
+                state.blue += 1
             }
             document.getElementById("blue-score").textContent = `Blue: ${state.blue}`
             document.getElementById("red-score").textContent = `Red: ${state.red}`

@@ -4,7 +4,7 @@
 
 Download this repo:
 ```sh
-git clone https://github.com/kerezsiz42/fencing-iot
+git clone https://github.com/kerezsiz42/epee-scoring-machine
 ```
 
 Change some constants according to your needs (network, server url):
@@ -14,7 +14,7 @@ Change some constants according to your needs (network, server url):
 #define WIFI_PASSWORD "your_network_password"
 #define SERVER_URL "http://your_server_ip:8080/button"
 #define COLOR "red" // or "blue"
-#define BUTTON_PIN 4
+#define BUTTON_PIN 23
 ```
 
 Download dependencies for node js project:

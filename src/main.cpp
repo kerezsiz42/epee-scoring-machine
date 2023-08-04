@@ -5,8 +5,8 @@
 
 #define WIFI_SSID "Hotspot"
 #define WIFI_PASSWORD "asdf1234"
-#define SERVER_URL "http://192.168.118.62:8080/button"
-#define COLOR "blue"
+#define SERVER_URL "http://192.168.189.45:8080/button"
+#define COLOR "red"
 #define BUTTON_PIN 23
 
 WiFiClient client;
